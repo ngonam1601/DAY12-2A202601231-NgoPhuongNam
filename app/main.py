@@ -17,7 +17,7 @@ from contextlib import asynccontextmanager
 from functools import lru_cache
 
 from fastapi import Depends, FastAPI
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, RedirectResponse
 from pydantic import BaseModel, Field
 
 from utils.mock_llm import ask_llm
@@ -64,6 +64,12 @@ async def lifespan(_app: FastAPI):
 
 
 app = FastAPI(title="Day 12 Production Agent", version=SERVICE_VERSION, lifespan=lifespan)
+
+
+@app.get("/", summary="Root")
+def root():
+    """Mở trang tài liệu Swagger của service."""
+    return RedirectResponse(url="/docs")
 
 
 from fastapi import Request
